@@ -1,4 +1,4 @@
-// poj_1001 
+// poj_1001
 // URL: http://poj.org/problem?id=1001
 
 /**
@@ -36,7 +36,6 @@
 */
 
 //========== 算法 ==========
-
 
 // 大数处理类
 // 将数字转化为数组，并记录小数点的位置
@@ -109,6 +108,8 @@ BigNumber.multi = function(a, b) {
             } else {
                 result[targetPosition] = tem;
             }
+
+            // 进位
             result[targetPosition] += up;
             up = ~~(result[targetPosition] / 10);
             result[targetPosition] %= 10;
@@ -160,16 +161,17 @@ var obj = [{
 var s = Date.now();
 var big;
 var result;
+var resultNumber;
 obj.forEach(function(v, i, a) {
     
     big = new BigNumber(v.r);
 
     result = big.pow(v.n);
-    result = result.toNumber()
+    resultNumber = result.toNumber();
     console.log('target: ' + v.t);
-    console.log('result: ' + result);
+    console.log('result: ' + resultNumber);
 
-    console.log(v.t + '' == result);
+    console.log(v.t + '' == resultNumber);
 
     console.log('---------------------------------------------------------------');
 
