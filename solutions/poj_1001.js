@@ -1,5 +1,4 @@
-// poj_1001
-// URL: http://poj.org/problem?id=1001
+// poj_1001 <http://poj.org/problem?id=1001>
 
 /**
     Description
@@ -50,7 +49,11 @@ var BigNumber = function(numberString) {
     } else {
         // 传入的是数字或字符串
         numberString = numberString + '';
-        this.pointPosition = numberString.length - 1 - numberString.indexOf('.');
+        if (numberString.indexOf('.') >= 0) {
+            this.pointPosition = numberString.length - 1 - numberString.indexOf('.');
+        } else {
+            this.pointPosition = 0;
+        }
         numberString = numberString.replace('.', '');
         var numberArray = [];
         var i, j;
@@ -64,16 +67,19 @@ var BigNumber = function(numberString) {
 
 // 输出数字
 BigNumber.prototype.toNumber = function() {
-    var outPut = '';
-    var arr = this.numberArray;
-    var pointPosition = this.pointPosition;
-    var len = arr.length;
-    while (len--) {
-        outPut += arr[len];
-        if (len == pointPosition) {
-            outPut += '.';
-        }
-    }    
+    // 复制数组
+    var outPut = this.numberArray.slice(0);
+    // 插入小数点
+    outPut.splice(this.pointPosition, 0, '.');
+    // 颠掉，生成字符串
+    outPut = outPut.reverse().join('');
+    if (outPut.indexOf('.') >= 0) {
+        // 正则删除末尾的0和小数点，以及开头数字部分的0（不包括小数点前的0）
+        outPut = outPut.replace(/\.0*$|^0+(?=\d)/g, '');
+    } else {
+        // 没有小数点的数字，只删除开头的0
+        outPut = outPut.replace(/^0+(?=\d)/g, '');
+    }
     return outPut;
 };
 

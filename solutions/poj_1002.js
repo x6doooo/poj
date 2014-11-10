@@ -1,5 +1,4 @@
-// poj_1002
-// URL: http://poj.org/problem?id=1002
+// poj_1002 <http://poj.org/problem?id=1002>
 
 /**
  Description
