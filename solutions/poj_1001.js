@@ -73,14 +73,8 @@ BigNumber.prototype.toNumber = function() {
     outPut.splice(this.pointPosition, 0, '.');
     // 颠掉，生成字符串
     outPut = outPut.reverse().join('');
-    if (outPut.indexOf('.') >= 0) {
-        // 正则删除末尾的0和小数点，以及开头数字部分的0（不包括小数点前的0）
-        outPut = outPut.replace(/\.0*$|^0+(?=\d)/g, '');
-    } else {
-        // 没有小数点的数字，只删除开头的0
-        outPut = outPut.replace(/^0+(?=\d)/g, '');
-    }
-    return outPut;
+    // 正则删除末尾的0和小数点，以及开头数字部分的0（不包括小数点前的0）
+    return outPut.replace(/\.0*$|^0+(?=\d)/g, '');
 };
 
 // 求n次幂
