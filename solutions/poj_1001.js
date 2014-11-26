@@ -46,11 +46,20 @@ var BigNumber = function(numberString) {
     if (typeof numberString != 'string' && typeof numberString != 'number') {
         this.pointPosition = numberString.pointPosition;
         this.numberArray = numberString.numberArray;
+        this.isNegative = numberString.isNegative;
     } else {
         // 传入的是数字或字符串
         numberString = numberString + '';
-        if (numberString.indexOf('.') >= 0) {
-            this.pointPosition = numberString.length - 1 - numberString.indexOf('.');
+
+        this.isNegative = false
+        if (numberString[0] == '-') {
+            this.isNegative = true;
+            numberString = numberString.replace(/\-/g, '');
+        }
+        
+        var pointPosition = numberString.indexOf('.')
+        if (pointPosition >= 0) {
+            this.pointPosition = numberString.length - 1 - pointPosition;
         } else {
             this.pointPosition = 0;
         }
@@ -74,7 +83,11 @@ BigNumber.prototype.toNumber = function() {
     // 颠掉，生成字符串
     outPut = outPut.reverse().join('');
     // 正则删除末尾的0和小数点，以及开头数字部分的0（不包括小数点前的0）
-    return outPut.replace(/\.0*$|^0+(?=\d)/g, '');
+    outPut = outPut.replace(/\.0*$|^0+(?=\d)/g, '');
+    if (this.isNegative) {
+        outPut = '-' + outPut;
+    }
+    return outPut;
 };
 
 // 求n次幂
@@ -123,7 +136,13 @@ BigNumber.multi = function(a, b) {
 
     var pointPosition = a.pointPosition + b.pointPosition; 
 
+    var isNegative = true
+    if ( (a.isNegative && b.isNegative) || (!a.isNegative && !b.isNegative) ) {
+        isNegative = false
+    }
+
     return new BigNumber({
+        isNegative: isNegative,
         numberArray: result,
         pointPosition: pointPosition
     });
@@ -178,3 +197,10 @@ obj.forEach(function(v, i, a) {
 });
 
 console.log('UseTime: ' + (Date.now() - s) + ' ms');
+
+//a = new BigNumber(10.4)
+//b = new BigNumber(-19.05)
+
+//console.log(bit);
+
+//console.log(BigNumber.multi(a, b))
